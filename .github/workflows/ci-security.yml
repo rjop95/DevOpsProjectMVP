@@ -42,7 +42,7 @@ jobs:
       # Paso 5: Escaneo de vulnerabilidades conocidas en las dependencias
       - name: Revisar vulnerabilidades en dependencias (Safety)
         run: |
-          safety check --full-report # Revisa si las versiones de las librerías instaladas tienen alguna vulnerabilidad reportada (CVE)
+          safety scan
 
       # Paso 6: Verificación de empaquetado (Contenerización)
       - name: Construir imagen Docker de prueba

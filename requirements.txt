@@ -1,13 +1,13 @@
-# Framework web principal actualizado a una versión reciente y segura
+# Framework web principal
 fastapi>=0.115.0
 
-# Servidor ASGI ultrarrápido compatible
+# Servidor ASGI ultrarrápido
 uvicorn>=0.30.0
 
-# Motor de validación de datos de alto rendimiento
+# Motor de validación de datos
 pydantic>=2.8.0
 
-# Extensión para gestionar las configuraciones de la app
+# Extensión para configuraciones
 pydantic-settings>=2.3.0
 
 # Herramienta de análisis estático de seguridad (SAST)
@@ -15,3 +15,6 @@ bandit==1.7.8
 
 # Herramienta de seguridad para escanear dependencias
 safety>=3.8.1
+
+# Forzamos una versión segura de setuptools
+setuptools>=83.0.0
