@@ -1,6 +1,3 @@
-# Framework web principal para construir la API de forma rápida y con tipado estricto
-fastapi==0.110.0
-
 # Framework web principal actualizado a una versión reciente y segura
 fastapi>=0.115.0
 
