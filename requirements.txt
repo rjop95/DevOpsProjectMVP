@@ -1,0 +1,17 @@
+# Framework web principal para construir la API de forma rápida y con tipado estricto
+fastapi==0.110.0
+
+# Servidor ASGI ultrarrápido necesario para correr y dar vida a tu aplicación FastAPI
+uvicorn==0.28.0
+
+# Motor de validación de datos de alto rendimiento basado en los tipos de Python
+pydantic==2.6.4
+
+# Extensión para gestionar las configuraciones de la app y variables de entorno de forma limpia
+pydantic-settings==2.2.1
+
+# Herramienta de análisis estático de seguridad (SAST) para detectar fallos o malas prácticas en el código Python
+bandit==1.7.8
+
+# Herramienta de seguridad para escanear las librerías instaladas en busca de vulnerabilidades conocidas (CVEs)
+safety==3.1.0
