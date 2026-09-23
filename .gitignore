@@ -10,3 +10,11 @@ venv/
 
 # Docker
 .dockerignore
+
+# Terraform files
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+!example.tfvars
