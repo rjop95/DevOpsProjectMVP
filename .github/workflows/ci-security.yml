@@ -1,50 +1,50 @@
 # Nombre que aparecerá en la interfaz de GitHub Actions para identificar este flujo de trabajo
 name: CI Security and Build Pipeline
 
-# Define en qué momentos o eventos se disparará automáticamente este pipeline
+# Define los eventos o disparadores que ejecutan automáticamente este pipeline
 on:
   push:
-    branches: [ "main" ] # Se ejecuta cada vez que haces un 'push' o subes cambios a la rama principal 'main'
+    branches: [ "main" ] # Se ejecuta cuando haces push a la rama principal 'main'
   pull_request:
-    branches: [ "main" ] # Se ejecuta también cuando abres o actualizas un Pull Request hacia la rama 'main'
+    branches: [ "main" ] # Se ejecuta cuando abres o actualizas un Pull Request hacia 'main'
 
-# Configuración de permisos de seguridad por defecto para el token de GitHub Actions
+# Configuración de permisos de seguridad por defecto para el token del pipeline
 permissions:
-  contents: read # Solo le da permisos de lectura al repositorio (principio de privilegios mínimos)
+  contents: read # Otorga únicamente permisos de lectura al repositorio (Principio de privilegios mínimos)
 
-# Definición de los trabajos (jobs) que correrán en este pipeline
+# Definición de los trabajos (jobs) que correrán en este flujo
 jobs:
   security-and-build:
-    runs-on: ubuntu-latest # Define el sistema operativo del servidor virtual (runner) donde correrá el pipeline
+    runs-on: ubuntu-latest # Define el sistema operativo de la máquina virtual (runner de GitHub)
     steps:
-      # Paso 1: Descargar el código fuente
+      # Paso 1: Clonar o descargar el código del repositorio en la máquina virtual
       - name: Checkout del código
-        uses: actions/checkout@v4 # Acción oficial de GitHub para clonar tu repositorio en el servidor virtual
+        uses: actions/checkout@v4
 
-      # Paso 2: Preparar el entorno de lenguaje
+      # Paso 2: Configurar la versión de Python en el entorno de ejecución
       - name: Configurar Python
-        uses: actions/setup-python@v5 # Acción oficial para instalar Python en el servidor
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11' # Versión específica de Python que usará el pipeline
-          cache: 'pip' # Guarda en caché las librerías para que las siguientes ejecuciones sean más rápidas
+          python-version: '3.11' # Versión específica de Python a utilizar
+          cache: 'pip' # Almacena en caché las dependencias para acelerar ejecuciones futuras
 
-      # Paso 3: Instalar las dependencias del proyecto
+      # Paso 3: Instalar las herramientas y dependencias del proyecto
       - name: Instalar dependencias
         run: |
-          python -m pip install --upgrade pip # Actualiza el gestor de paquetes pip a su última versión
-          pip install -r requirements.txt # Instala todas las librerías declaradas en tu archivo requirements.txt
+          python -m pip install --upgrade pip # Actualiza el gestor pip
+          pip install -r requirements.txt # Instala librerías de la app y herramientas de seguridad (Bandit, pip-audit)
 
-      # Paso 4: Análisis estático de seguridad en el código (SAST)
-      - name: Análisis estático de seguridad (Bandit)
+      # Paso 4: Análisis estático de código (SAST) buscando malas prácticas o fallos de seguridad en Python
+      - name: Análisis estático de seguridad en código (Bandit)
         run: |
-          bandit -r app/ -ll # Analiza recursivamente la carpeta 'app/' buscando fallos de seguridad en el código Python (-ll filtra solo alertas de severidad media y alta)
+          bandit -r app/ -ll # Analiza recursivamente la carpeta 'app/' filtrando alertas de severidad media y alta
 
-      # Paso 5: Escaneo de vulnerabilidades conocidas en las dependencias
-      - name: Revisar vulnerabilidades en dependencias (Safety)
+      # Paso 5: Escaneo de vulnerabilidades conocidas (CVEs) en las dependencias declaradas
+      - name: Escaneo de vulnerabilidades en dependencias (pip-audit)
         run: |
-          safety scan
+          pip-audit -r requirements.txt # Audita el requirements.txt de forma open source, segura y sin requerir cuentas ni inicios de sesión
 
-      # Paso 6: Verificación de empaquetado (Contenerización)
+      # Paso 6: Verificación y empaquetado de la aplicación en un contenedor Docker
       - name: Construir imagen Docker de prueba
         run: |
-          docker build -t devops-project-mvp:${{ github.sha }} . # Construye la imagen Docker localmente usando el Dockerfile de la raíz y le etiqueta un identificador único basado en el commit actual (${{ github.sha }})
+          docker build -t devops-project-mvp:${{ github.sha }} . # Construye la imagen localmente usando el Dockerfile y un tag único basado en el hash del commit actual

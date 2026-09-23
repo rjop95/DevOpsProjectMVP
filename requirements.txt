@@ -13,8 +13,5 @@ pydantic-settings>=2.3.0
 # Herramienta de análisis estático de seguridad (SAST)
 bandit==1.7.8
 
-# Herramienta de seguridad para escanear dependencias
-safety>=3.8.1
-
-# Forzamos una versión segura de setuptools
-setuptools>=83.0.0
+# Herramienta moderna de auditoría de vulnerabilidades en dependencias
+pip-audit>=2.7.0
